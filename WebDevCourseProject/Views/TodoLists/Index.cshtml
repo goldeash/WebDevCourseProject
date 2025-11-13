@@ -1,0 +1,43 @@
+﻿@model IEnumerable<WebDevCourseProject.Models.TodoList>
+@{
+    ViewData["Title"] = "My Todo Lists";
+}
+
+<h2>My Todo Lists</h2>
+
+<p>
+    <a asp-action="Create">Create New List</a>
+</p>
+
+@if (Model.Any())
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Title</td>
+                    <td>@item.Description</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <form asp-action="Delete" method="post" style="display:inline;">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No todo lists found. <a asp-action="Create">Create your first todo list!</a></p>
+}

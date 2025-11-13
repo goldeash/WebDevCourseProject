@@ -1,5 +1,4 @@
 ﻿<!DOCTYPE html>
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -9,14 +8,15 @@
 <body>
     <menu>
         <a asp-controller="Home" asp-action="Index">Home</a>
-        <a asp-controller="Crud" asp-action="Index">Crud</a>
+        <a asp-controller="TodoLists" asp-action="Index">My Todo Lists</a>
+        <partial name="_LoginPartial" />
     </menu>
-    
+
     <p>
-        @RenderSection("SubHeader", false);
+        @RenderSection("SubHeader", false)
     </p>
 
-    <div>   
+    <div>
         @RenderBody()
     </div>
 
