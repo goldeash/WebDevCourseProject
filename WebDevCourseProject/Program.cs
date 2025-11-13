@@ -7,15 +7,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
+// Добавляем Entity Framework
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Добавляем Identity с поддержкой Razor Pages
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
 })
 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+// Добавляем Razor Pages поддержку
+builder.Services.AddRazorPages();
+
+// Добавляем наш сервис
 builder.Services.AddScoped<ITodoListService, TodoListService>();
 
 var app = builder.Build();
@@ -29,6 +35,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
+// Добавляем аутентификацию и авторизацию
 app.UseAuthentication();
 app.UseAuthorization();
 
