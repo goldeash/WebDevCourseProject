@@ -7,6 +7,15 @@
     <link rel="stylesheet" href="~/css/app.css" />
 </head>
 <body>
+    <menu>
+        <a asp-controller="Home" asp-action="Index">Home</a>
+        <a asp-controller="Crud" asp-action="Index">Crud</a>
+    </menu>
+    
+    <p>
+        @RenderSection("SubHeader", false);
+    </p>
+
     <div>
         @RenderBody()
     </div>
