@@ -42,6 +42,7 @@ public class TodoListsController : Controller
             await _todoListService.CreateTodoListAsync(todoList);
             return RedirectToAction(nameof(Index));
         }
+
         return View(todoList);
     }
 
@@ -83,6 +84,7 @@ public class TodoListsController : Controller
             await _todoListService.UpdateTodoListAsync(existingList);
             return RedirectToAction(nameof(Index));
         }
+
         return View(todoList);
     }
 
