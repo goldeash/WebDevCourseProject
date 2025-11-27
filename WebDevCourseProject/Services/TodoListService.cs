@@ -16,6 +16,7 @@ public class TodoListService : ITodoListService
     public async Task<List<TodoList>> GetUserTodoListsAsync(string userId)
     {
         return await _context.TodoLists
+            .Include(tl => tl.Tasks) // Добавляем загрузку задач
             .Where(tl => tl.UserId == userId)
             .OrderBy(tl => tl.Title)
             .ToListAsync();
@@ -24,6 +25,7 @@ public class TodoListService : ITodoListService
     public async Task<TodoList?> GetTodoListByIdAsync(int id, string userId)
     {
         return await _context.TodoLists
+            .Include(tl => tl.Tasks) // Добавляем загрузку задач
             .FirstOrDefaultAsync(tl => tl.Id == id && tl.UserId == userId);
     }
 

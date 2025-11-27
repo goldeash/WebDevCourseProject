@@ -16,4 +16,6 @@ public class TodoList
     public string UserId { get; set; } = string.Empty;
 
     public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
+
+    public ICollection<TodoTask> Tasks { get; set; } = new List<TodoTask>();
 }

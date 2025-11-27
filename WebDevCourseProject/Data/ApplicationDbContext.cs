@@ -12,4 +12,15 @@ public class ApplicationDbContext : IdentityDbContext
     }
 
     public DbSet<TodoList> TodoLists { get; set; }
+    public DbSet<TodoTask> Tasks { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+
+        builder.Entity<TodoList>()
+            .HasMany(tl => tl.Tasks)
+            .WithOne(t => t.TodoList)
+            .HasForeignKey(t => t.TodoListId);
+    }
 }

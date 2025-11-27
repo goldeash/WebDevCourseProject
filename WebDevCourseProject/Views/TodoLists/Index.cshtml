@@ -16,6 +16,7 @@
             <tr>
                 <th>Title</th>
                 <th>Description</th>
+                <th>Tasks Count</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -25,7 +26,10 @@
                 <tr>
                     <td>@item.Title</td>
                     <td>@item.Description</td>
+                    <td>@item.Tasks.Count</td>
                     <td>
+                        <a asp-controller="Tasks" asp-action="Index" asp-route-listId="@item.Id">View Tasks</a> |
+                        <a asp-controller="Tasks" asp-action="Create" asp-route-listId="@item.Id">Add Task</a> |
                         <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                         <form asp-action="Delete" method="post" style="display:inline;" onsubmit="return confirmDelete()">
                             <input type="hidden" name="id" value="@item.Id" />

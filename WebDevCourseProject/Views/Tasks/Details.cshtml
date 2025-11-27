@@ -1,0 +1,32 @@
+﻿@model WebDevCourseProject.Models.TodoTask
+@{
+    ViewData["Title"] = "Task Details";
+}
+
+<h2>Task Details</h2>
+
+<div>
+    <h4>@Model.Title</h4>
+    <hr />
+    <dl>
+        <dt>Description</dt>
+        <dd>@Model.Description</dd>
+
+        <dt>Due Date</dt>
+        <dd>@Model.DueDate.ToString("MMM dd, yyyy")</dd>
+
+        <dt>Status</dt>
+        <dd>@Model.Status</dd>
+
+        <dt>Created Date</dt>
+        <dd>@Model.CreatedDate.ToString("MMM dd, yyyy")</dd>
+
+        <dt>Todo List</dt>
+        <dd>@Model.TodoList.Title</dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index" asp-route-listId="@Model.TodoListId">Back to Tasks</a>
+</div>

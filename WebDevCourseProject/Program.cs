@@ -18,7 +18,9 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 
 builder.Services.AddRazorPages();
 
+// Register services
 builder.Services.AddScoped<ITodoListService, TodoListService>();
+builder.Services.AddScoped<ITaskService, TaskService>(); // Добавляем новый сервис
 
 var app = builder.Build();
 
@@ -27,9 +29,9 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
+app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-
 app.UseAuthentication();
 app.UseAuthorization();
 

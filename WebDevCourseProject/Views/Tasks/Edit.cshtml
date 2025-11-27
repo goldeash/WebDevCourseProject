@@ -1,0 +1,46 @@
+﻿@model WebDevCourseProject.Models.TodoTask
+@{
+    ViewData["Title"] = "Edit Task";
+}
+
+<h2>Edit Task</h2>
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="TodoListId" />
+    <input type="hidden" asp-for="AssignedUserId" />
+
+    <div>
+        <label asp-for="Title"></label>
+        <input asp-for="Title" />
+        <span asp-validation-for="Title"></span>
+    </div>
+
+    <div>
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description"></textarea>
+        <span asp-validation-for="Description"></span>
+    </div>
+
+    <div>
+        <label asp-for="DueDate"></label>
+        <input asp-for="DueDate" type="datetime-local"
+               value="@Model.DueDate.ToString("yyyy-MM-ddTHH:mm")" />
+        <span asp-validation-for="DueDate"></span>
+    </div>
+
+    <div>
+        <label asp-for="Status"></label>
+        <select asp-for="Status">
+            <option value="Not Started">Not Started</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+        </select>
+        <span asp-validation-for="Status"></span>
+    </div>
+
+    <div>
+        <input type="submit" value="Save" />
+        <a asp-action="Index" asp-route-listId="@Model.TodoListId">Cancel</a>
+    </div>
+</form>
