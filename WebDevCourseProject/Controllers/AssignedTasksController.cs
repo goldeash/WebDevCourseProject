@@ -17,9 +17,6 @@ public class AssignedTasksController : Controller
         _userManager = userManager;
     }
 
-    // US11: View a list of tasks assigned to me
-    // US12: Filter tasks in my assigned task list
-    // US13: Sort tasks in my assigned task list
     public async Task<IActionResult> Index(string statusFilter = "active", string sortBy = "duedate")
     {
         var userId = _userManager.GetUserId(User);
@@ -38,7 +35,6 @@ public class AssignedTasksController : Controller
         return View(tasks);
     }
 
-    // US14: Change the status of a task from the list of assigned tasks
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> UpdateStatus(int taskId, string newStatus)

@@ -20,7 +20,6 @@ public class TasksController : Controller
         _userManager = userManager;
     }
 
-    // US05: View the list of tasks in a to-do list
     public async Task<IActionResult> Index(int listId)
     {
         var userId = _userManager.GetUserId(User);
@@ -36,7 +35,6 @@ public class TasksController : Controller
         return View(tasks);
     }
 
-    // US06: View the task details page
     public async Task<IActionResult> Details(int id)
     {
         var userId = _userManager.GetUserId(User);
@@ -50,7 +48,6 @@ public class TasksController : Controller
         return View(task);
     }
 
-    // US07: Add a new to-do task
     public async Task<IActionResult> Create(int listId)
     {
         var userId = _userManager.GetUserId(User);
@@ -76,18 +73,15 @@ public class TasksController : Controller
     {
         var userId = _userManager.GetUserId(User);
 
-        // Проверяем что TodoList существует и принадлежит пользователю
         var todoList = await _todoListService.GetTodoListByIdAsync(task.TodoListId, userId!);
         if (todoList == null)
         {
             return NotFound();
         }
 
-        // Устанавливаем обязательные поля которые не приходят из формы
         task.AssignedUserId = userId!;
         task.CreatedDate = DateTime.UtcNow;
 
-        // Очищаем ошибку валидации для TodoList, так как мы установили его вручную
         ModelState.Remove("TodoList");
 
         if (ModelState.IsValid)
@@ -96,11 +90,9 @@ public class TasksController : Controller
             return RedirectToAction(nameof(Index), new { listId = task.TodoListId });
         }
 
-        // Если валидация не прошла, возвращаем форму с ошибками
         return View(task);
     }
 
-    // US09: Edit a to-do task
     public async Task<IActionResult> Edit(int id)
     {
         var userId = _userManager.GetUserId(User);
@@ -125,21 +117,18 @@ public class TasksController : Controller
 
         var userId = _userManager.GetUserId(User);
 
-        // Проверяем что задача существует и принадлежит пользователю
         var existingTask = await _taskService.GetTaskByIdAsync(id, userId!);
         if (existingTask == null)
         {
             return NotFound();
         }
 
-        // Очищаем ошибку валидации для TodoList и других навигационных свойств
         ModelState.Remove("TodoList");
         ModelState.Remove("AssignedUserId");
         ModelState.Remove("CreatedDate");
 
         if (ModelState.IsValid)
         {
-            // Обновляем только разрешенные поля
             existingTask.Title = task.Title;
             existingTask.Description = task.Description;
             existingTask.DueDate = task.DueDate;
@@ -149,11 +138,9 @@ public class TasksController : Controller
             return RedirectToAction(nameof(Index), new { listId = existingTask.TodoListId });
         }
 
-        // Если валидация не прошла, возвращаем форму с ошибками
         return View(task);
     }
 
-    // US08: Delete a to-do task
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(int id)

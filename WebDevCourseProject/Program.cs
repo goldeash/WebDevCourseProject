@@ -18,9 +18,8 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 
 builder.Services.AddRazorPages();
 
-// Register services
 builder.Services.AddScoped<ITodoListService, TodoListService>();
-builder.Services.AddScoped<ITaskService, TaskService>(); // Добавляем новый сервис
+builder.Services.AddScoped<ITaskService, TaskService>();
 
 var app = builder.Build();
 

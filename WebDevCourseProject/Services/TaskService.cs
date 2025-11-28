@@ -13,7 +13,6 @@ public class TaskService : ITaskService
         _context = context;
     }
 
-    // EP02 methods
     public async Task<List<TodoTask>> GetTasksByListAsync(int todoListId, string userId)
     {
         return await _context.Tasks
@@ -60,7 +59,6 @@ public class TaskService : ITaskService
             .ToListAsync();
     }
 
-    // EP03 methods
     public async Task<List<TodoTask>> GetAssignedTasksAsync(string userId)
     {
         return await _context.Tasks
