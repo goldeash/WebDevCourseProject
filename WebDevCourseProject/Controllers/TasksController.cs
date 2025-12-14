@@ -11,13 +11,16 @@ public class TasksController : Controller
 {
     private readonly ITaskService _taskService;
     private readonly ITodoListService _todoListService;
+    private readonly ITagService _tagService;
     private readonly UserManager<IdentityUser> _userManager;
 
-    public TasksController(ITaskService taskService, ITodoListService todoListService, UserManager<IdentityUser> userManager)
+    public TasksController(ITaskService taskService, ITodoListService todoListService,
+                           UserManager<IdentityUser> userManager, ITagService tagService)
     {
         _taskService = taskService;
         _todoListService = todoListService;
         _userManager = userManager;
+        _tagService = tagService;
     }
 
     public async Task<IActionResult> Index(int listId)
@@ -38,12 +41,18 @@ public class TasksController : Controller
     public async Task<IActionResult> Details(int id)
     {
         var userId = _userManager.GetUserId(User);
-        var task = await _taskService.GetTaskByIdAsync(id, userId!);
+        var task = await _taskService.GetTaskByIdAsync(id, userId);
 
         if (task == null)
         {
             return NotFound();
         }
+
+        var allTags = await _tagService.GetUserTagsAsync(userId);
+        var taskTags = await _taskService.GetTaskTagsAsync(id, userId);
+
+        ViewBag.AllTags = allTags;
+        ViewBag.TaskTags = taskTags;
 
         return View(task);
     }
@@ -156,5 +165,21 @@ public class TasksController : Controller
         var listId = task.TodoListId;
         await _taskService.DeleteTaskAsync(id, userId!);
         return RedirectToAction(nameof(Index), new { listId });
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AddTag(int taskId, int tagId)
+    {
+        var userId = _userManager.GetUserId(User);
+        await _tagService.AddTagToTaskAsync(taskId, tagId, userId);
+        return RedirectToAction(nameof(Details), new { id = taskId });
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> RemoveTag(int taskId, int tagId)
+    {
+        var userId = _userManager.GetUserId(User);
+        await _tagService.RemoveTagFromTaskAsync(taskId, tagId, userId);
+        return RedirectToAction(nameof(Details), new { id = taskId });
     }
 }

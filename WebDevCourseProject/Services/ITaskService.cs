@@ -14,5 +14,6 @@ public interface ITaskService
     Task<List<TodoTask>> GetAssignedTasksFilteredAsync(string userId, string statusFilter);
     Task<List<TodoTask>> GetAssignedTasksSortedAsync(string userId, string sortBy);
     Task UpdateTaskStatusAsync(int taskId, string userId, string newStatus);
+    Task<List<Tag>> GetTaskTagsAsync(int taskId, string userId);
     Task<List<TodoTask>> SearchTasksAsync(string userId, string searchText);
 }

@@ -20,6 +20,7 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddScoped<ITodoListService, TodoListService>();
 builder.Services.AddScoped<ITaskService, TaskService>();
+builder.Services.AddScoped<ITagService, TagService>();
 
 var app = builder.Build();
 

@@ -112,6 +112,16 @@ public class TaskService : ITaskService
         }
     }
 
+    public async Task<List<Tag>> GetTaskTagsAsync(int taskId, string userId)
+    {
+        var task = await _context.Tasks
+            .Include(t => t.TodoList)
+            .Include(t => t.Tags)
+            .FirstOrDefaultAsync(t => t.Id == taskId && t.TodoList.UserId == userId);
+
+        return task?.Tags?.ToList() ?? new List<Tag>();
+    }
+
     public async Task<List<TodoTask>> SearchTasksAsync(string userId, string searchText)
     {
         return await _context.Tasks

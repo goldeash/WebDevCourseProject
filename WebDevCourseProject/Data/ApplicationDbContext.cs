@@ -13,6 +13,7 @@ public class ApplicationDbContext : IdentityDbContext
 
     public DbSet<TodoList> TodoLists { get; set; }
     public DbSet<TodoTask> Tasks { get; set; }
+    public DbSet<Tag> Tags { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -21,6 +22,7 @@ public class ApplicationDbContext : IdentityDbContext
         builder.Entity<TodoList>()
             .HasMany(tl => tl.Tasks)
             .WithOne(t => t.TodoList)
-            .HasForeignKey(t => t.TodoListId);
+            .HasForeignKey(t => t.TodoListId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
