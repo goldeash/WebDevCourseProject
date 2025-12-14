@@ -26,6 +26,7 @@ public class TaskService : ITaskService
     {
         return await _context.Tasks
             .Include(t => t.TodoList)
+            .Include(t => t.Tags)
             .FirstOrDefaultAsync(t => t.Id == id && t.TodoList.UserId == userId);
     }
 

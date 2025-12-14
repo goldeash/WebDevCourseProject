@@ -32,7 +32,6 @@ menu {
             color: #007bff;
         }
 
-    /* Login partial */
     menu span {
         margin-right: 10px;
     }
@@ -153,4 +152,44 @@ tr.overdue {
 .filter-active {
     font-weight: bold;
     color: #007bff;
+}
+
+/* Tag styles */
+.tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.tag-item {
+    display: inline-block;
+}
+
+.tag-checkbox {
+    display: none;
+}
+
+.tag-label {
+    display: inline-block;
+    background: #f0f0f0;
+    color: #333;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+}
+
+.tag-checkbox:checked + .tag-label {
+    background: #007bff;
+    color: white;
+}
+
+.tag-label:hover {
+    background: #e0e0e0;
+}
+
+.tag-checkbox:checked + .tag-label:hover {
+    background: #0056b3;
 }

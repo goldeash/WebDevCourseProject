@@ -1,8 +1,6 @@
 ﻿@model WebDevCourseProject.Models.TodoTask
 @{
     ViewData["Title"] = "Task Details";
-    var allTags = ViewBag.AllTags as List<WebDevCourseProject.Models.Tag>;
-    var taskTags = ViewBag.TaskTags as List<WebDevCourseProject.Models.Tag>;
 }
 
 <h2>Task Details</h2>
@@ -25,46 +23,24 @@
 
         <dt>Todo List</dt>
         <dd>@Model.TodoList.Title</dd>
-    </dl>
-</div>
 
-<div>
-    <h5>Tags</h5>
-    @if (taskTags != null && taskTags.Any())
-    {
-        <ul>
-            @foreach (var tag in taskTags)
+        <dt>Tags</dt>
+        <dd>
+            @if (Model.Tags != null && Model.Tags.Any())
             {
-                <li>
-                    @tag.Name
-                    <form asp-action="RemoveTag" method="post" style="display:inline;">
-                        <input type="hidden" name="taskId" value="@Model.Id" />
-                        <input type="hidden" name="tagId" value="@tag.Id" />
-                        <button type="submit">Remove</button>
-                    </form>
-                </li>
-            }
-        </ul>
-    }
-    else
-    {
-        <p>No tags added.</p>
-    }
-
-    @if (allTags != null && allTags.Any())
-    {
-        <h6>Add Tag:</h6>
-        <form asp-action="AddTag" method="post">
-            <input type="hidden" name="taskId" value="@Model.Id" />
-            <select name="tagId">
-                @foreach (var tag in allTags)
+                @foreach (var tag in Model.Tags)
                 {
-                    <option value="@tag.Id">@tag.Name</option>
+                    <span style="background: #f0f0f0; padding: 3px 8px; margin: 0 3px; border-radius: 3px; display: inline-block;">
+                        @tag.Name
+                    </span>
                 }
-            </select>
-            <button type="submit">Add Tag</button>
-        </form>
-    }
+            }
+            else
+            {
+                <span>No tags</span>
+            }
+        </dd>
+    </dl>
 </div>
 
 <div>
