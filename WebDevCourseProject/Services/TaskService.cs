@@ -111,4 +111,15 @@ public class TaskService : ITaskService
             await _context.SaveChangesAsync();
         }
     }
+
+    public async Task<List<TodoTask>> SearchTasksAsync(string userId, string searchText)
+    {
+        return await _context.Tasks
+            .Include(t => t.TodoList)
+            .Where(t => t.TodoList.UserId == userId &&
+                       (t.Title.Contains(searchText) ||
+                        t.Description.Contains(searchText)))
+            .OrderBy(t => t.DueDate)
+            .ToListAsync();
+    }
 }
