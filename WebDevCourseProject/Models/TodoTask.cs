@@ -31,4 +31,6 @@ public class TodoTask
     public List<Tag> Tags { get; set; }
 
     public bool IsOverdue => DueDate < DateTime.UtcNow && Status != "Completed";
+
+    public List<Comment> Comments { get; set; } = new List<Comment>();
 }

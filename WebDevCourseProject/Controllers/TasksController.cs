@@ -12,15 +12,18 @@ public class TasksController : Controller
     private readonly ITaskService _taskService;
     private readonly ITodoListService _todoListService;
     private readonly ITagService _tagService;
+    private readonly ICommentService _commentService;
     private readonly UserManager<IdentityUser> _userManager;
 
     public TasksController(ITaskService taskService, ITodoListService todoListService,
-                          UserManager<IdentityUser> userManager, ITagService tagService)
+                          UserManager<IdentityUser> userManager, ITagService tagService,
+                          ICommentService commentService)
     {
         _taskService = taskService;
         _todoListService = todoListService;
         _userManager = userManager;
         _tagService = tagService;
+        _commentService = commentService;
     }
 
     public async Task<IActionResult> Index(int listId)
@@ -47,6 +50,9 @@ public class TasksController : Controller
         {
             return NotFound();
         }
+
+        ViewBag.CommentService = _commentService;
+        ViewBag.CurrentUserId = userId;
 
         return View(task);
     }

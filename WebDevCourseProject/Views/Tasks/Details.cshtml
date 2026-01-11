@@ -1,6 +1,11 @@
 ﻿@model WebDevCourseProject.Models.TodoTask
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+@inject WebDevCourseProject.Services.ICommentService CommentService
 @{
     ViewData["Title"] = "Task Details";
+    var userId = UserManager.GetUserId(User);
+    var comments = await CommentService.GetTaskCommentsAsync(Model.Id, userId);
 }
 
 <h2>Task Details</h2>
@@ -28,12 +33,12 @@
         <dd>
             @if (Model.Tags != null && Model.Tags.Any())
             {
-                @foreach (var tag in Model.Tags)
-                {
-                    <span style="background: #f0f0f0; padding: 3px 8px; margin: 0 3px; border-radius: 3px; display: inline-block;">
-                        @tag.Name
-                    </span>
-                }
+                <div style="display: flex; flex-wrap: wrap; gap: 5px;">
+                    @foreach (var tag in Model.Tags)
+                    {
+                        <span style="background: #f0f0f0; padding: 3px 8px; border-radius: 3px;">@tag.Name</span>
+                    }
+                </div>
             }
             else
             {
@@ -43,7 +48,66 @@
     </dl>
 </div>
 
+<!-- Комментарии -->
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <h5>Comments (@comments.Count)</h5>
+
+    <!-- Форма добавления комментария -->
+    <form asp-controller="Comments" asp-action="Create" method="post">
+        <input type="hidden" name="taskId" value="@Model.Id" />
+        <textarea name="content" placeholder="Add a comment..." style="width: 100%; padding: 8px; margin-bottom: 10px;"></textarea>
+        <div>
+            <input type="submit" value="Add Comment" />
+        </div>
+    </form>
+
+    <!-- Список комментариев -->
+    @if (comments.Any())
+    {
+        <div style="margin-top: 20px;">
+            @foreach (var comment in comments)
+            {
+                <div style="border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; border-radius: 5px;">
+                    <div style="font-size: 12px; color: #666;">
+                        @comment.CreatedDate.ToString("MMM dd, yyyy HH:mm")
+                        @if (comment.ModifiedDate.HasValue)
+                        {
+                            <span>(edited @comment.ModifiedDate.Value.ToString("MMM dd, HH:mm"))</span>
+                        }
+                    </div>
+                    <div style="margin: 5px 0;">@comment.Content</div>
+
+                    @if (comment.UserId == userId)
+                    {
+                        <div style="font-size: 12px;">
+                            <!-- Форма редактирования -->
+                            <form asp-controller="Comments" asp-action="Edit" method="post" style="display: inline;">
+                                <input type="hidden" name="id" value="@comment.Id" />
+                                <textarea name="content" style="width: 100%; padding: 5px; margin: 5px 0;" placeholder="Edit comment...">@comment.Content</textarea>
+                                <button type="submit" style="font-size: 12px; padding: 2px 8px;">Save</button>
+                            </form>
+
+                            <!-- Форма удаления -->
+                            <form asp-controller="Comments" asp-action="Delete" method="post" style="display: inline;">
+                                <input type="hidden" name="id" value="@comment.Id" />
+                                <button type="submit" style="font-size: 12px; padding: 2px 8px; background: #dc3545;"
+                                        onclick="return confirm('Delete this comment?')">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p>No comments yet.</p>
+    }
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit Task</a> |
     <a asp-action="Index" asp-route-listId="@Model.TodoListId">Back to Tasks</a>
 </div>

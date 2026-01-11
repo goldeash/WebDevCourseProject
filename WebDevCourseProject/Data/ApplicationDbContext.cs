@@ -15,6 +15,8 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<TodoTask> Tasks { get; set; }
     public DbSet<Tag> Tags { get; set; }
 
+    public DbSet<Comment> Comments { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
@@ -23,6 +25,12 @@ public class ApplicationDbContext : IdentityDbContext
             .HasMany(tl => tl.Tasks)
             .WithOne(t => t.TodoList)
             .HasForeignKey(t => t.TodoListId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<Comment>()
+            .HasOne(c => c.Task)
+            .WithMany(t => t.Comments)
+            .HasForeignKey(c => c.TaskId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }
